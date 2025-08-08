@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知识小课堂</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            color: #4a5568;
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #718096;
+            font-size: 0.9em;
+        }
+
+        .theme-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .theme-color {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .theme-color.active {
+            border-color: #4a5568;
+            transform: scale(1.1);
+        }
+
+        .theme-color:nth-child(1) { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .theme-color:nth-child(2) { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .theme-color:nth-child(3) { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .theme-color:nth-child(4) { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+
+        .nav-menu {
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #4a5568;
+            text-decoration: none;
+        }
+
+        .nav-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateX(5px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-icon {
+            font-size: 1.2em;
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .module {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .module.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .module-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .module-title {
+            font-size: 2.5em;
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+
+        .module-subtitle {
+            color: #718096;
+            font-size: 1.1em;
+        }
+
+        .welcome-content {
+            text-align: center;
+        }
+
+        .welcome-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .welcome-card:nth-child(2) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .welcome-card:nth-child(3) {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .welcome-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .game-area {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .question {
+            font-size: 2em;
+            color: #2d3748;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .question.correct-animation {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .question.wrong-animation {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        .answer-input {
+            font-size: 1.5em;
+            padding: 15px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            width: 200px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .feedback {
+            font-size: 1.2em;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .feedback.correct {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+        }
+
+        .feedback.wrong {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+            color: white;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-label {
+            color: #718096;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .score-value {
+            color: #2d3748;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .character-display {
+            font-size: 4em;
+            color: #2d3748;
+            margin: 20px 0;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .character-info {
+            font-size: 1.2em;
+            color: #4a5568;
+            margin-bottom: 20px;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f093fb;
+            animation: confetti-fall 3s linear forwards;
+            z-index: 1000;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .geography-map {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            background: #e2e8f0;
+            border-radius: 15px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            color: #4a5568;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .nav-menu {
+                display: flex;
+                overflow-x: auto;
+                gap: 10px;
+            }
+
+            .nav-item {
+                white-space: nowrap;
+                margin-bottom: 0;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .module {
+                padding: 20px;
+            }
+
+            .module-title {
+                font-size: 2em;
+            }
+
+            .question {
+                font-size: 1.5em;
+            }
+
+            .character-display {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <h1>📚 知识小课堂</h1>
+            <p>快乐学习，轻松成长</p>
+        </div>
+        
+        <div class="theme-selector">
+            <div class="theme-color active" data-theme="purple"></div>
+            <div class="theme-color" data-theme="pink"></div>
+            <div class="theme-color" data-theme="blue"></div>
+            <div class="theme-color" data-theme="green"></div>
+        </div>
+        
+        <nav class="nav-menu">
+            <div class="nav-item active" data-module="welcome">
+                <span class="nav-icon">🏠</span>
+                首页
+            </div>
+            <div class="nav-item" data-module="math">
+                <span class="nav-icon">🔢</span>
+                算术练习
+            </div>
+            <div class="nav-item" data-module="chinese">
+                <span class="nav-icon">🈯</span>
+                汉字识字
+            </div>
+            <div class="nav-item" data-module="geography">
+                <span class="nav-icon">🌍</span>
+                地理知识
+            </div>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <!-- 欢迎页面 -->
+        <div class="module active" id="welcome">
+            <div class="module-header">
+                <h1 class="module-title">🎉 欢迎来到知识小课堂</h1>
+                <p class="module-subtitle">选择你想要学习的内容，开始愉快的学习之旅吧！</p>
+            </div>
+            <div class="welcome-content">
+                <div class="welcome-grid">
+                    <div class="welcome-card" data-module="math">
+                        <div class="card-icon">🔢</div>
+                        <div class="card-title">算术练习</div>
+                        <div class="card-desc">练习基础数学运算</div>
+                    </div>
+                    <div class="welcome-card" data-module="chinese">
+                        <div class="card-icon">🈯</div>
+                        <div class="card-title">汉字识字</div>
+                        <div class="card-desc">学习汉字读音和含义</div>
+                    </div>
+                    <div class="welcome-card" data-module="geography">
+                        <div class="card-icon">🌍</div>
+                        <div class="card-title">地理知识</div>
+                        <div class="card-desc">探索世界地理奥秘</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 算术练习模块 -->
+        <div class="module" id="math">
+            <div class="module-header">
+                <h1 class="module-title">🔢 算术练习</h1>
+                <p class="module-subtitle">练习基础数学运算，提高计算能力</p>
+            </div>
+            
+            <div class="score-board">
+                <div class="score-item">
+                    <div class="score-label">得分</div>
+                    <div class="score-value" id="math-score">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">进度</div>
+                    <div class="score-value" id="math-progress">0/10</div>
+                </div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="math-progress-fill"></div>
+            </div>
+            
+            <div class="game-area">
+                <div class="question" id="math-question">点击开始练习！</div>
+                
+                <div class="input-group">
+                    <input type="number" class="answer-input" id="math-answer-input" placeholder="输入答案" disabled>
+                </div>
+                
+                <div class="feedback" id="math-feedback"></div>
+                
+                <div>
+                    <button class="btn" id="math-start-btn" onclick="startMathGame()">开始练习</button>
+                    <button class="btn" id="math-check-btn" onclick="checkMathAnswer()" disabled>检查答案</button>
+                    <button class="btn" id="math-next-btn" onclick="nextMathQuestion()" disabled>下一题</button>
+                    <button class="btn" id="math-end-btn" onclick="endMathGame()" style="display: none;">结束练习</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 汉字识字模块 -->
+        <div class="module" id="chinese">
+            <div class="module-header">
+                <h1 class="module-title">🈯 汉字识字</h1>
+                <p class="module-subtitle">学习汉字的读音和含义</p>
+            </div>
+            
+            <div class="score-board">
+                <div class="score-item">
+                    <div class="score-label">得分</div>
+                    <div class="score-value" id="chinese-score">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">进度</div>
+                    <div class="score-value" id="chinese-progress">0/10</div>
+                </div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="chinese-progress-fill"></div>
+            </div>
+            
+            <div class="game-area">
+                <div class="character-display" id="chinese-character">点击开始练习！</div>
+                <div class="character-info" id="chinese-character-info"></div>
+                
+                <div class="input-group">
+                    <input type="text" class="answer-input" id="chinese-pinyin-input" placeholder="输入拼音" disabled>
+                </div>
+                
+                <div class="feedback" id="chinese-feedback"></div>
+                
+                <div>
+                    <button class="btn" id="chinese-start-btn" onclick="startChineseGame()">开始练习</button>
+                    <button class="btn" id="chinese-check-btn" onclick="checkChineseAnswer()" disabled>检查答案</button>
+                    <button class="btn" id="chinese-next-btn" onclick="nextChineseQuestion()" disabled>下一题</button>
+                    <button class="btn" id="chinese-end-btn" onclick="endChineseGame()" style="display: none;">结束练习</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 地理知识模块 -->
+        <div class="module" id="geography">
+            <div class="module-header">
+                <h1 class="module-title">🌍 地理知识</h1>
+                <p class="module-subtitle">了解世界各国的地理位置</p>
+            </div>
+            
+            <div class="score-board">
+                <div class="score-item">
+                    <div class="score-label">得分</div>
+                    <div class="score-value" id="geography-score">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">进度</div>
+                    <div class="score-value" id="geography-progress">0/10</div>
+                </div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="geography-progress-fill"></div>
+            </div>
+            
+            <div class="game-area">
+                <div class="geography-map" id="geography-map">点击开始练习！</div>
+                <div class="question" id="geography-question"></div>
+                
+                <div class="input-group">
+                    <input type="text" class="answer-input" id="geography-answer-input" placeholder="输入答案" disabled>
+                </div>
+                
+                <div class="feedback" id="geography-feedback"></div>
+                
+                <div>
+                    <button class="btn" id="geography-start-btn" onclick="startGeographyGame()">开始练习</button>
+                    <button class="btn" id="geography-check-btn" onclick="checkGeographyAnswer()" disabled>检查答案</button>
+                    <button class="btn" id="geography-next-btn" onclick="nextGeographyQuestion()" disabled>下一题</button>
+                    <button class="btn" id="geography-end-btn" onclick="endGeographyGame()" style="display: none;">结束练习</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let currentModule = 'welcome';
+        
+        // 主题切换功能
+        const themes = {
+            purple: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            pink: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+            blue: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+            green: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
+        };
+        
+        function changeTheme(theme) {
+            document.body.style.background = themes[theme];
+            
+            // 更新主题选择器状态
+            document.querySelectorAll('.theme-color').forEach(el => el.classList.remove('active'));
+            document.querySelector(`[data-theme="${theme}"]`).classList.add('active');
+        }
+        
+        // 模块切换功能
+        function showModule(moduleName) {
+            // 隐藏所有模块
+            document.querySelectorAll('.module').forEach(module => {
+                module.classList.remove('active');
+            });
+            
+            // 显示指定模块
+            document.getElementById(moduleName).classList.add('active');
+            
+            // 更新导航状态
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[data-module="${moduleName}"]`).classList.add('active');
+            
+            currentModule = moduleName;
+        }
+        
+        // 彩带效果
+        function createConfetti() {
+            const colors = ['#f093fb', '#f5576c', '#4facfe', '#00f2fe', '#43e97b', '#38f9d7'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 3 + 's';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3000);
+                }, i * 50);
+            }
+        }
+        
+        // 算术练习模块
+        const mathModule = {
+            isGameActive: false,
+            questionCount: 0,
+            correctCount: 0,
+            wrongCount: 0,
+            totalScore: 0,
+            maxQuestions: 10,
+            currentQuestion: {},
+            hasAnswered: false,
+            lastUserAnswer: null,
+            encouragements: [
+                '太棒了！🎉', '答对了！👏', '很好！✨', '继续加油！💪', 
+                '你真聪明！🧠', '完美！🌟', '做得好！👍', '真厉害！🏆'
+            ],
+            corrections: [
+                '不对哦，再试试！🤔', '差一点点！💭', '再想想看！🤓', '加油！💪'
+            ]
+        };
+        
+        function generateMathQuestion() {
+            const operations = ['+', '-', '*'];
+            const operation = operations[Math.floor(Math.random() * operations.length)];
+            
+            let num1, num2, answer;
+            
+            switch(operation) {
+                case '+':
+                    num1 = Math.floor(Math.random() * 50) + 1;
+                    num2 = Math.floor(Math.random() * 50) + 1;
+                    answer = num1 + num2;
+                    break;
+                case '-':
+                    num1 = Math.floor(Math.random() * 50) + 20;
+                    num2 = Math.floor(Math.random() * num1);
+                    answer = num1 - num2;
+                    break;
+                case '*':
+                    num1 = Math.floor(Math.random() * 10) + 1;
+                    num2 = Math.floor(Math.random() * 10) + 1;
+                    answer = num1 * num2;
+                    break;
+            }
+            
+            mathModule.currentQuestion = {
+                question: `${num1} ${operation} ${num2} = ?`,
+                answer: answer
+            };
+            
+            document.getElementById('math-question').textContent = mathModule.currentQuestion.question;
+        }
+        
+        function startMathGame() {
+            mathModule.isGameActive = true;
+            mathModule.questionCount = 0;
+            mathModule.correctCount = 0;
+            mathModule.wrongCount = 0;
+            mathModule.totalScore = 0;
+            
+            document.getElementById('math-start-btn').style.display = 'none';
+            document.getElementById('math-answer-input').disabled = false;
+            document.getElementById('math-check-btn').disabled = false;
+            
+            nextMathQuestion();
+            updateMathScore();
+            updateMathProgress();
+        }
+        
+        function nextMathQuestion() {
+            if (mathModule.questionCount >= mathModule.maxQuestions) {
+                endMathGame();
+                return;
+            }
+            
+            mathModule.questionCount++;
+            mathModule.hasAnswered = false;
+            mathModule.lastUserAnswer = null;
+            
+            generateMathQuestion();
+            
+            document.getElementById('math-answer-input').value = '';
+            document.getElementById('math-answer-input').focus();
+            document.getElementById('math-feedback').textContent = '';
+            document.getElementById('math-feedback').className = 'feedback';
+            
+            document.getElementById('math-check-btn').disabled = false;
+            document.getElementById('math-next-btn').disabled = true;
+            
+            updateMathProgress();
+        }
+        
+        function checkMathAnswer() {
+            const userAnswer = parseInt(document.getElementById('math-answer-input').value);
+            const feedbackEl = document.getElementById('math-feedback');
+            const questionArea = document.getElementById('math-question');
+            
+            if (isNaN(userAnswer)) {
+                feedbackEl.textContent = '请输入一个数字！';
+                feedbackEl.className = 'feedback wrong';
+                return;
+            }
+            
+            if (!mathModule.hasAnswered) {
+                if (userAnswer === mathModule.currentQuestion.answer) {
+                    mathModule.correctCount++;
+                    mathModule.totalScore += 10;
+                    
+                    const encouragement = mathModule.encouragements[Math.floor(Math.random() * mathModule.encouragements.length)];
+                    feedbackEl.textContent = encouragement;
+                    feedbackEl.className = 'feedback correct';
+                    
+                    questionArea.classList.add('correct-animation');
+                    setTimeout(() => questionArea.classList.remove('correct-animation'), 600);
+                    
+                    createConfetti();
+                    
+                    document.getElementById('math-check-btn').disabled = true;
+                    document.getElementById('math-next-btn').disabled = false;
+                } else {
+                    mathModule.wrongCount++;
+                    
+                    const correction = mathModule.corrections[Math.floor(Math.random() * mathModule.corrections.length)];
+                    feedbackEl.textContent = `${correction} 正确答案是 ${mathModule.currentQuestion.answer}`;
+                    feedbackEl.className = 'feedback wrong';
+                    
+                    questionArea.classList.add('wrong-animation');
+                    setTimeout(() => questionArea.classList.remove('wrong-animation'), 600);
+                    
+                    document.getElementById('math-check-btn').disabled = false;
+                    document.getElementById('math-next-btn').disabled = false;
+                }
+                
+                mathModule.hasAnswered = true;
+                updateMathScore();
+            } else {
+                if (userAnswer === mathModule.currentQuestion.answer) {
+                    feedbackEl.textContent = '这次对了！🎉 虽然不是第一次，但坚持很棒！';
+                    feedbackEl.className = 'feedback correct';
+                    questionArea.classList.add('correct-animation');
+                    setTimeout(() => questionArea.classList.remove('correct-animation'), 600);
+                    createConfetti();
+                    
+                    document.getElementById('math-check-btn').disabled = true;
+                    document.getElementById('math-next-btn').disabled = false;
+                } else {
+                    feedbackEl.textContent = '还是不对哦！🤔 正确答案是 ' + mathModule.currentQuestion.answer + '，再试试看！';
+                    feedbackEl.className = 'feedback wrong';
+                    questionArea.classList.add('wrong-animation');
+                    setTimeout(() => questionArea.classList.remove('wrong-animation'), 600);
+                    
+                    document.getElementById('math-check-btn').disabled = false;
+                    document.getElementById('math-next-btn').disabled = false;
+                }
+            }
+            
+            mathModule.lastUserAnswer = userAnswer;
+        }
+        
+        function endMathGame() {
+            mathModule.isGameActive = false;
+            const accuracy = Math.round((mathModule.correctCount / mathModule.maxQuestions) * 100);
+            
+            document.getElementById('math-question').innerHTML = `
+                🎊 练习完成！🎊<br>
+                <div style="font-size: 0.6em; margin-top: 10px;">
+                    正确率: ${accuracy}%<br>
+                    ${accuracy >= 80 ? '表现优秀！🌟' : accuracy >= 60 ? '继续努力！💪' : '多多练习！📚'}
+                </div>
+            `;
+            
+            document.getElementById('math-answer-input').disabled = true;
+            document.getElementById('math-check-btn').disabled = true;
+            document.getElementById('math-next-btn').disabled = true;
+            document.getElementById('math-feedback').textContent = '';
+            
+            if (accuracy >= 80) {
+                createConfetti();
+            }
+        }
+        
+        function resetMathGame() {
+            mathModule.isGameActive = false;
+            mathModule.questionCount = 0;
+            mathModule.correctCount = 0;
+            mathModule.wrongCount = 0;
+            mathModule.totalScore = 0;
+            
+            document.getElementById('math-question').textContent = '点击开始练习！';
+            document.getElementById('math-answer-input').value = '';
+            document.getElementById('math-answer-input').disabled = true;
+            document.getElementById('math-check-btn').disabled = true;
+            document.getElementById('math-next-btn').disabled = true;
+            document.getElementById('math-feedback').textContent = '';
+            document.getElementById('math-feedback').className = 'feedback';
+            
+            updateMathScore();
+            updateMathProgress();
+        }
+        
+        function updateMathScore() {
+            document.getElementById('math-score').textContent = mathModule.totalScore;
+        }
+        
+        function updateMathProgress() {
+            const progress = (mathModule.questionCount / mathModule.maxQuestions) * 100;
+            document.getElementById('math-progress').textContent = `${mathModule.questionCount}/${mathModule.maxQuestions}`;
+            document.getElementById('math-progress-fill').style.width = progress + '%';
+        }
+        
+        // 汉字识字模块
+        const chineseModule = {
+            isGameActive: false,
+            questionCount: 0,
+            correctCount: 0,
+            wrongCount: 0,
+            totalScore: 0,
+            maxQuestions: 10,
+            currentCharacter: {},
+            hasAnswered: false,
+            lastUserAnswer: null,
+            characters: [
+                { char: '山', pinyin: 'shan', meaning: '高大的土石堆' },
+                { char: '水', pinyin: 'shui', meaning: '无色无味的液体' },
+                { char: '火', pinyin: 'huo', meaning: '燃烧时发出的光和热' },
+                { char: '木', pinyin: 'mu', meaning: '树木，木材' },
+                { char: '土', pinyin: 'tu', meaning: '地面上的泥土' },
+                { char: '日', pinyin: 'ri', meaning: '太阳，白天' },
+                { char: '月', pinyin: 'yue', meaning: '月亮，月份' },
+                { char: '星', pinyin: 'xing', meaning: '夜空中发光的天体' },
+                { char: '云', pinyin: 'yun', meaning: '天空中的水汽' },
+                { char: '雨', pinyin: 'yu', meaning: '从云中降落的水滴' },
+                { char: '风', pinyin: 'feng', meaning: '空气的流动' },
+                { char: '雪', pinyin: 'xue', meaning: '白色的冰晶' },
+                { char: '花', pinyin: 'hua', meaning: '植物的繁殖器官' },
+                { char: '草', pinyin: 'cao', meaning: '矮小的绿色植物' },
+                { char: '树', pinyin: 'shu', meaning: '高大的木本植物' }
+            ]
+        };
+        
+        function getRandomCharacter() {
+            return chineseModule.characters[Math.floor(Math.random() * chineseModule.characters.length)];
+        }
+        
+        function startChineseGame() {
+            chineseModule.isGameActive = true;
+            chineseModule.questionCount = 0;
+            chineseModule.correctCount = 0;
+            chineseModule.wrongCount = 0;
+            chineseModule.totalScore = 0;
+            
+            document.getElementById('chinese-start-btn').style.display = 'none';
+            document.getElementById('chinese-pinyin-input').disabled = false;
+            document.getElementById('chinese-check-btn').disabled = false;
+            
+            nextChineseQuestion();
+            updateChineseScore();
+            updateChineseProgress();
+        }
+        
+        function nextChineseQuestion() {
+            if (chineseModule.questionCount >= chineseModule.maxQuestions) {
+                endChineseGame();
+                return;
+            }
+            
+            chineseModule.questionCount++;
+            chineseModule.hasAnswered = false;
+            chineseModule.lastUserAnswer = null;
+            
+            chineseModule.currentCharacter = getRandomCharacter();
+            document.getElementById('chinese-character').textContent = chineseModule.currentCharacter.char;
+            document.getElementById('chinese-character-info').textContent = `含义：${chineseModule.currentCharacter.meaning}`;
+            document.getElementById('chinese-pinyin-input').value = '';
+            document.getElementById('chinese-pinyin-input').focus();
+            document.getElementById('chinese-feedback').textContent = '';
+            document.getElementById('chinese-feedback').className = 'feedback';
+            
+            document.getElementById('chinese-check-btn').disabled = false;
+            document.getElementById('chinese-next-btn').disabled = true;
+            
+            updateChineseProgress();
+        }
+        
+        function checkChineseAnswer() {
+            const userAnswer = document.getElementById('chinese-pinyin-input').value.toLowerCase().trim();
+            const correctAnswer = chineseModule.currentCharacter.pinyin.toLowerCase();
+            const feedbackEl = document.getElementById('chinese-feedback');
+            const characterEl = document.getElementById('chinese-character');
+            
+            if (!userAnswer) {
+                feedbackEl.textContent = '请输入拼音！';
+                feedbackEl.className = 'feedback wrong';
+                return;
+            }
+            
+            if (!chineseModule.hasAnswered) {
+                if (userAnswer === correctAnswer) {
+                    chineseModule.correctCount++;
+                    chineseModule.totalScore += 10;
+                    
+                    feedbackEl.textContent = '太棒了！读音正确！🎉';
+                    feedbackEl.className = 'feedback correct';
+                    
+                    characterEl.classList.add('correct-animation');
+                    setTimeout(() => characterEl.classList.remove('correct-animation'), 600);
+                    
+                    createConfetti();
+                    
+                    document.getElementById('chinese-check-btn').disabled = true;
+                    document.getElementById('chinese-next-btn').disabled = false;
+                } else {
+                    chineseModule.wrongCount++;
+                    
+                    feedbackEl.textContent = `不对哦，正确读音是：${chineseModule.currentCharacter.pinyin}`;
+                    feedbackEl.className = 'feedback wrong';
+                    
+                    characterEl.classList.add('wrong-animation');
+                    setTimeout(() => characterEl.classList.remove('wrong-animation'), 600);
+                    
+                    document.getElementById('chinese-check-btn').disabled = false;
+                    document.getElementById('chinese-next-btn').disabled = false;
+                }
+                
+                chineseModule.hasAnswered = true;
+                updateChineseScore();
+            } else {
+                if (userAnswer === correctAnswer) {
+                    feedbackEl.textContent = '这次对了！🎉 记住这个读音！';
+                    feedbackEl.className = 'feedback correct';
+                    characterEl.classList.add('correct-animation');
+                    setTimeout(() => characterEl.classList.remove('correct-animation'), 600);
+                    createConfetti();
+                    
+                    document.getElementById('chinese-check-btn').disabled = true;
+                    document.getElementById('chinese-next-btn').disabled = false;
+                } else {
+                    feedbackEl.textContent = `还是不对哦！正确读音是：${chineseModule.currentCharacter.pinyin}`;
+                    feedbackEl.className = 'feedback wrong';
+                    characterEl.classList.add('wrong-animation');
+                    setTimeout(() => characterEl.classList.remove('wrong-animation'), 600);
+                    
+                    document.getElementById('chinese-check-btn').disabled = false;
+                    document.getElementById('chinese-next-btn').disabled = false;
+                }
+            }
+            
+            chineseModule.lastUserAnswer = userAnswer;
+        }
+        
+        function endChineseGame() {
+            chineseModule.isGameActive = false;
+            const accuracy = Math.round((chineseModule.correctCount / chineseModule.maxQuestions) * 100);
+            
+            document.getElementById('chinese-character').innerHTML = `
+                🎊 练习完成！🎊<br>
+                <div style="font-size: 0.3em; margin-top: 10px;">
+                    正确率: ${accuracy}%<br>
+                    ${accuracy >= 80 ? '汉字小达人！🌟' : accuracy >= 60 ? '继续加油！💪' : '多多练习！📚'}
+                </div>
+            `;
+            
+            document.getElementById('chinese-character-info').textContent = '';
+            document.getElementById('chinese-pinyin-input').disabled = true;
+            document.getElementById('chinese-check-btn').disabled = true;
+            document.getElementById('chinese-next-btn').disabled = true;
+            document.getElementById('chinese-feedback').textContent = '';
+            
+            if (accuracy >= 80) {
+                createConfetti();
+            }
+        }
+        
+        function resetChineseGame() {
+            chineseModule.isGameActive = false;
+            chineseModule.questionCount = 0;
+            chineseModule.correctCount = 0;
+            chineseModule.wrongCount = 0;
+            chineseModule.totalScore = 0;
+            
+            document.getElementById('chinese-character').textContent = '点击开始练习！';
+            document.getElementById('chinese-character-info').textContent = '';
+            document.getElementById('chinese-pinyin-input').value = '';
+            document.getElementById('chinese-pinyin-input').disabled = true;
+            document.getElementById('chinese-check-btn').disabled = true;
+            document.getElementById('chinese-next-btn').disabled = true;
+            document.getElementById('chinese-feedback').textContent = '';
+            document.getElementById('chinese-feedback').className = 'feedback';
+            
+            updateChineseScore();
+            updateChineseProgress();
+        }
+        
+        function updateChineseScore() {
+            document.getElementById('chinese-score').textContent = chineseModule.totalScore;
+        }
+        
+        function updateChineseProgress() {
+            const progress = (chineseModule.questionCount / chineseModule.maxQuestions) * 100;
+            document.getElementById('chinese-progress').textContent = `${chineseModule.questionCount}/${chineseModule.maxQuestions}`;
+            document.getElementById('chinese-progress-fill').style.width = progress + '%';
+        }
+        
+        // 地理知识模块
+        const geographyModule = {
+            isGameActive: false,
+            questionCount: 0,
+            correctCount: 0,
+            wrongCount: 0,
+            totalScore: 0,
+            maxQuestions: 10,
+            currentQuestion: {},
+            hasAnswered: false,
+            lastUserAnswer: null,
+            questions: [
+                { question: '中国的首都是哪里？', answer: '北京' },
+                { question: '世界上最大的海洋是？', answer: '太平洋' },
+                { question: '世界上最长的河流是？', answer: '尼罗河' },
+                { question: '世界上最高的山峰是？', answer: '珠穆朗玛峰' },
+                { question: '美国的首都是哪里？', answer: '华盛顿' },
+                { question: '日本的首都是哪里？', answer: '东京' },
+                { question: '法国的首都是哪里？', answer: '巴黎' },
+                { question: '英国的首都是哪里？', answer: '伦敦' },
+                { question: '世界上最大的沙漠是？', answer: '撒哈拉沙漠' },
+                { question: '世界上最大的岛屿是？', answer: '格陵兰岛' }
+            ]
+        };
+        
+        function getRandomGeographyQuestion() {
+            return geographyModule.questions[Math.floor(Math.random() * geographyModule.questions.length)];
+        }
+        
+        function startGeographyGame() {
+            geographyModule.isGameActive = true;
+            geographyModule.questionCount = 0;
+            geographyModule.correctCount = 0;
+            geographyModule.wrongCount = 0;
+            geographyModule.totalScore = 0;
+            
+            document.getElementById('geography-start-btn').style.display = 'none';
+            document.getElementById('geography-answer-input').disabled = false;
+            document.getElementById('geography-check-btn').disabled = false;
+            
+            nextGeographyQuestion();
+            updateGeographyScore();
+            updateGeographyProgress();
+        }
+        
+        function nextGeographyQuestion() {
+            if (geographyModule.questionCount >= geographyModule.maxQuestions) {
+                endGeographyGame();
+                return;
+            }
+            
+            geographyModule.questionCount++;
+            geographyModule.hasAnswered = false;
+            geographyModule.lastUserAnswer = null;
+            
+            geographyModule.currentQuestion = getRandomGeographyQuestion();
+            document.getElementById('geography-map').textContent = '🗺️ 地理问答';
+            document.getElementById('geography-question').textContent = geographyModule.currentQuestion.question;
+            document.getElementById('geography-answer-input').value = '';
+            document.getElementById('geography-answer-input').focus();
+            document.getElementById('geography-feedback').textContent = '';
+            document.getElementById('geography-feedback').className = 'feedback';
+            
+            document.getElementById('geography-check-btn').disabled = false;
+            document.getElementById('geography-next-btn').disabled = true;
+            
+            updateGeographyProgress();
+        }
+        
+        function checkGeographyAnswer() {
+            const userAnswer = document.getElementById('geography-answer-input').value.trim();
+            const correctAnswer = geographyModule.currentQuestion.answer;
+            const feedbackEl = document.getElementById('geography-feedback');
+            const questionEl = document.getElementById('geography-question');
+            
+            if (!userAnswer) {
+                feedbackEl.textContent = '请输入答案！';
+                feedbackEl.className = 'feedback wrong';
+                return;
+            }
+            
+            if (!geographyModule.hasAnswered) {
+                if (userAnswer === correctAnswer) {
+                    geographyModule.correctCount++;
+                    geographyModule.totalScore += 10;
+                    
+                    feedbackEl.textContent = '太棒了！答案正确！🎉';
+                    feedbackEl.className = 'feedback correct';
+                    
+                    questionEl.classList.add('correct-animation');
+                    setTimeout(() => questionEl.classList.remove('correct-animation'), 600);
+                    
+                    createConfetti();
+                    
+                    document.getElementById('geography-check-btn').disabled = true;
+                    document.getElementById('geography-next-btn').disabled = false;
+                } else {
+                    geographyModule.wrongCount++;
+                    
+                    feedbackEl.textContent = `不对哦，正确答案是：${correctAnswer}`;
+                    feedbackEl.className = 'feedback wrong';
+                    
+                    questionEl.classList.add('wrong-animation');
+                    setTimeout(() => questionEl.classList.remove('wrong-animation'), 600);
+                    
+                    document.getElementById('geography-check-btn').disabled = false;
+                    document.getElementById('geography-next-btn').disabled = false;
+                }
+                
+                geographyModule.hasAnswered = true;
+                updateGeographyScore();
+            } else {
+                if (userAnswer === correctAnswer) {
+                    feedbackEl.textContent = '这次对了！🎉 记住这个答案！';
+                    feedbackEl.className = 'feedback correct';
+                    questionEl.classList.add('correct-animation');
+                    setTimeout(() => questionEl.classList.remove('correct-animation'), 600);
+                    createConfetti();
+                    
+                    document.getElementById('geography-check-btn').disabled = true;
+                    document.getElementById('geography-next-btn').disabled = false;
+                } else {
+                    feedbackEl.textContent = `还是不对哦！正确答案是：${correctAnswer}`;
+                    feedbackEl.className = 'feedback wrong';
+                    questionEl.classList.add('wrong-animation');
+                    setTimeout(() => questionEl.classList.remove('wrong-animation'), 600);
+                    
+                    document.getElementById('geography-check-btn').disabled = false;
+                    document.getElementById('geography-next-btn').disabled = false;
+                }
+            }
+            
+            geographyModule.lastUserAnswer = userAnswer;
+        }
+        
+        function endGeographyGame() {
+            geographyModule.isGameActive = false;
+            const accuracy = Math.round((geographyModule.correctCount / geographyModule.maxQuestions) * 100);
+            
+            document.getElementById('geography-map').innerHTML = `
+                🎊 练习完成！🎊<br>
+                <div style="font-size: 0.6em; margin-top: 10px;">
+                    正确率: ${accuracy}%<br>
+                    ${accuracy >= 80 ? '地理小专家！🌟' : accuracy >= 60 ? '继续探索！💪' : '多多学习！📚'}
+                </div>
+            `;
+            
+            document.getElementById('geography-question').textContent = '';
+            document.getElementById('geography-answer-input').disabled = true;
+            document.getElementById('geography-check-btn').disabled = true;
+            document.getElementById('geography-next-btn').disabled = true;
+            document.getElementById('geography-feedback').textContent = '';
+            
+            if (accuracy >= 80) {
+                createConfetti();
+            }
+        }
+        
+        function resetGeographyGame() {
+            geographyModule.isGameActive = false;
+            geographyModule.questionCount = 0;
+            geographyModule.correctCount = 0;
+            geographyModule.wrongCount = 0;
+            geographyModule.totalScore = 0;
+            
+            document.getElementById('geography-map').textContent = '点击开始练习！';
+            document.getElementById('geography-question').textContent = '';
+            document.getElementById('geography-answer-input').value = '';
+            document.getElementById('geography-answer-input').disabled = true;
+            document.getElementById('geography-check-btn').disabled = true;
+            document.getElementById('geography-next-btn').disabled = true;
+            document.getElementById('geography-feedback').textContent = '';
+            document.getElementById('geography-feedback').className = 'feedback';
+            
+            updateGeographyScore();
+            updateGeographyProgress();
+        }
+        
+        function updateGeographyScore() {
+            document.getElementById('geography-score').textContent = geographyModule.totalScore;
+        }
+        
+        function updateGeographyProgress() {
+            const progress = (geographyModule.questionCount / geographyModule.maxQuestions) * 100;
+            document.getElementById('geography-progress').textContent = `${geographyModule.questionCount}/${geographyModule.maxQuestions}`;
+            document.getElementById('geography-progress-fill').style.width = progress + '%';
+        }
+        
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            // 主题切换事件
+            document.querySelectorAll('.theme-color').forEach(themeEl => {
+                themeEl.addEventListener('click', function() {
+                    const theme = this.getAttribute('data-theme');
+                    changeTheme(theme);
+                });
+            });
+            
+            // 导航菜单事件
+            document.querySelectorAll('.nav-item').forEach(navItem => {
+                navItem.addEventListener('click', function() {
+                    const module = this.getAttribute('data-module');
+                    showModule(module);
+                });
+            });
+            
+            // 欢迎卡片事件
+            document.querySelectorAll('.welcome-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const module = this.getAttribute('data-module');
+                    showModule(module);
+                });
+            });
+            
+            // 键盘事件监听
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    
+                    if (currentModule === 'math' && mathModule.isGameActive) {
+                        if (!mathModule.hasAnswered && !document.getElementById('math-check-btn').disabled) {
+                            checkMathAnswer();
+                        } else if (!document.getElementById('math-next-btn').disabled) {
+                            if (mathModule.questionCount >= mathModule.maxQuestions) {
+                                endMathGame();
+                            } else {
+                                nextMathQuestion();
+                            }
+                        }
+                    } else if (currentModule === 'chinese' && chineseModule.isGameActive) {
+                        if (!chineseModule.hasAnswered && !document.getElementById('chinese-check-btn').disabled) {
+                            checkChineseAnswer();
+                        } else if (!document.getElementById('chinese-next-btn').disabled) {
+                            if (chineseModule.questionCount >= chineseModule.maxQuestions) {
+                                endChineseGame();
+                            } else {
+                                nextChineseQuestion();
+                            }
+                        }
+                    } else if (currentModule === 'geography' && geographyModule.isGameActive) {
+                        if (!geographyModule.hasAnswered && !document.getElementById('geography-check-btn').disabled) {
+                            checkGeographyAnswer();
+                        } else if (!document.getElementById('geography-next-btn').disabled) {
+                            if (geographyModule.questionCount >= geographyModule.maxQuestions) {
+                                endGeographyGame();
+                            } else {
+                                nextGeographyQuestion();
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // 默认显示欢迎页面
+            showModule('welcome');
+        });
+    </script>
+</body>
+</html>
